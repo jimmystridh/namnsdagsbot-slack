@@ -18,8 +18,6 @@ const today = `${todayDate.getFullYear()}-${pad(todayDate.getMonth() + 1)}-${pad
 
 const todayNamnsdagar = days.dagar.find(((day) => day.datum == today)).namnsdag
 
-slack.send('Vi gratulerar @jonatan i efterskott på Jonatan-dagen :cake:')
-
 todayNamnsdagar.forEach((name) => {
     const today = namnsdagar[name.toLowerCase()]
     if(today) {
