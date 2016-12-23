@@ -1,0 +1,1 @@
+0 0 9 1/1 * ? * root cd /app && /usr/local/bin/node /app/index.js >> /var/log/cron.log 2>&1
