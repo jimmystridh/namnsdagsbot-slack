@@ -21,11 +21,17 @@ const todayNameDayNames = nameDays.find(day => day.date === todayDateString).nam
 todayNameDayNames.forEach(name => {
   const todayNameDayUsers = nameToUsersMap[name.toLowerCase()]
   if (todayNameDayUsers) {
-    const mentioned = todayNameDayUsers.map((u) => '@' + u)
-    const commandSeparatedGreeting = mentioned.join(', ')
+    const mentions = todayNameDayUsers.map(u => '@' + u)
+    const mentionsEnumerated = listToEnumerationText(mentions)
+    const gratz = `Idag gratulerar vi ${mentionsEnumerated} på ${name}-dagen :cake:`
 
-    const gratz = `Idag gratulerar vi ${commandSeparatedGreeting} på ${name}-dagen :cake:`
     console.log(gratz)
     slack.send(gratz)
   }
 })
+
+function listToEnumerationText(list) {
+  if (list.length === 1) return list[0].toString()
+
+  return `${list.slice(0, -1).join(', ')} och ${list[list.length - 1]}`
+}
