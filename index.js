@@ -1,11 +1,8 @@
 const SlackWebhook = require('slack-webhook')
 require('dotenv').config()
 
-const todayDate = new Date()
-const year = todayDate.getFullYear()
-
-const days = require(`./${year}.json`) //from http://api.dryg.net/dagar/v2.1/2016
-const namesdays = require('./namnsdagar.json')
+const nameDays = require('./nameDays.json')
+const nameToUsersMap = require('./nameToUsersMap.json')
 
 const slack = new SlackWebhook(process.env.WEBHOOK_URL, {
   defaults: {
@@ -17,18 +14,24 @@ const slack = new SlackWebhook(process.env.WEBHOOK_URL, {
 
 const pad = (number) => number < 10 ? '0' + number : number
 
-const today = `${todayDate.getFullYear()}-${pad(todayDate.getMonth() + 1)}-${pad(todayDate.getDate())}`
+const todayDate = new Date()
+const todayDateString = `${pad(todayDate.getMonth() + 1)}-${pad(todayDate.getDate())}`
+const todayNameDayNames = nameDays.find(day => day.date === todayDateString).nameDay
 
-const todayNamesdays = days.dagar.find(((day) => day.datum == today)).namnsdag
+todayNameDayNames.forEach(name => {
+  const todayNameDayUsers = nameToUsersMap[name.toLowerCase()]
+  if (todayNameDayUsers) {
+    const mentions = todayNameDayUsers.map(u => '@' + u)
+    const mentionsEnumerated = listToEnumerationText(mentions)
+    const gratz = `Idag gratulerar vi ${mentionsEnumerated} på ${name}-dagen :cake:`
 
-todayNamesdays.forEach((name) => {
-  const todaysUsers = namesdays[name.toLowerCase()]
-  if(todaysUsers) {
-    const mentioned = todaysUsers.map((u) => '@' + u)
-    const commandSeparatedGreeting = mentioned.join(', ')
-
-    const gratz = `Idag gratulerar vi ${commandSeparatedGreeting} på ${name}-dagen :cake:`
     console.log(gratz)
     slack.send(gratz)
   }
 })
+
+function listToEnumerationText(list) {
+  if (list.length === 1) return list[0].toString()
+
+  return `${list.slice(0, -1).join(', ')} och ${list[list.length - 1]}`
+}
