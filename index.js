@@ -16,10 +16,10 @@ const pad = (number) => number < 10 ? '0' + number : number
 
 const todayDate = new Date()
 const todayDateString = `${pad(todayDate.getMonth() + 1)}-${pad(todayDate.getDate())}`
-const today = nameDays.find(day => day.date === todayDateString)
-if (!today) return
+const nameDay = nameDays.find(day => day.date === todayDateString)
+if (!nameDay) return
 
-today.nameDay.forEach(name => {
+nameDay.names.forEach(name => {
   const todayNameDayUsers = nameToUsersMap[name.toLowerCase()]
   if (todayNameDayUsers) {
     const mentions = todayNameDayUsers.map(u => '@' + u)
