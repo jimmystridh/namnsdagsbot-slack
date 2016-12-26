@@ -1,4 +1,6 @@
 # Namnsdagsbot
+[![CircleCI](https://circleci.com/gh/jimmystridh/namnsdagsbot-slack.svg?style=svg)](https://circleci.com/gh/jimmystridh/namnsdagsbot-slack)
+
 Announces name days in a slack channel
 
 #How to start
