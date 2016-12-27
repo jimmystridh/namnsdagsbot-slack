@@ -10,9 +10,9 @@ COPY package.json package.json
 RUN npm install  
 COPY . .
 
-ADD crontab /etc/cron.d/namnsdag
+ADD crontab /etc/cron.d/name-day
  
-RUN chmod 0644 /etc/cron.d/namnsdag
+RUN chmod 0644 /etc/cron.d/name-day
 
 VOLUME /var/log/
 

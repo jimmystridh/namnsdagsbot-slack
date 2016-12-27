@@ -27,7 +27,7 @@ nameDay.names.forEach(name => {
     const gratz = `Idag gratulerar vi ${mentionsEnumerated} på ${name}-dagen :cake:`
 
     console.log(gratz)
-    slack.send(gratz)
+    slack.send({ text: gratz, parse: 'full' })
   }
 })
 

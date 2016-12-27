@@ -1,14 +1,14 @@
 {
   "name": "namnsdagsbot",
   "version": "1.0.0",
-  "description": "",
+  "description": "Announces name days in a slack channel",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node --harmony-async-await index.js"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Jimmy Stridh <jimmy@stridh.nu>",
+  "license": "MIT",
   "dependencies": {
     "dotenv": "^2.0.0",
     "slack-webhook": "^1.0.0"
