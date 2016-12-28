@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const SlackWebhook = require('slack-webhook')
 require('dotenv').config()
 
