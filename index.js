@@ -13,25 +13,24 @@ const slack = new SlackWebhook(process.env.WEBHOOK_URL, {
 })
 
 const pad = number => number < 10 ? '0' + number : number
-const listToEnumerationText = list => list.length === 1
-  ? list[0].toString()
-  : `${list.slice(0, -1).join(', ')} och ${list[list.length - 1]}`
+
+const REMINDER_TEXT = ':bell: Imorgon har du namnsdag! Du glömmer väl inte fika? :cake: ' +
+  'Det är ju alltid uppskattat bland kollegorna :yum:'
 
 sendGratzToNameDayCelebrators()
 sendReminderToUpcomingCelebrators()
 
 function sendGratzToNameDayCelebrators() {
   const todayDate = new Date()
-  const todayDateString = `${pad(todayDate.getMonth() + 1)}-${pad(todayDate.getDate())}`
-  const nameDay = nameDays.find(day => day.date === todayDateString)
+  const nameDay = getNameDayForDate(todayDate)
   if (!nameDay) return
 
   nameDay.names.forEach(name => {
     const todayNameDayUsers = nameToUsersMap[name.toLowerCase()]
     if (todayNameDayUsers) {
       const mentions = todayNameDayUsers.map(u => '@' + u)
-      const mentionsEnumerated = listToEnumerationText(mentions)
-      const gratz = `Idag gratulerar vi ${mentionsEnumerated} på ${name}-dagen :cake:`
+      const mentionsText = listToEnumerationText(mentions)
+      const gratz = `Idag gratulerar vi ${mentionsText} på ${name}-dagen :cake:`
 
       console.log(gratz)
       slack.send({ text: gratz, parse: 'full' })
@@ -42,8 +41,7 @@ function sendGratzToNameDayCelebrators() {
 function sendReminderToUpcomingCelebrators() {
   const tomorrowDate = new Date()
   tomorrowDate.setDate(tomorrowDate.getDate() + 1)
-  const tomorrowDateString = `${pad(tomorrowDate.getMonth() + 1)}-${pad(tomorrowDate.getDate())}`
-  const nameDay = nameDays.find(day => day.date === tomorrowDateString)
+  const nameDay = getNameDayForDate(tomorrowDate)
   if (!nameDay) return
 
   nameDay.names.forEach(name => {
@@ -51,13 +49,21 @@ function sendReminderToUpcomingCelebrators() {
     if (tomorrowNameDayUsers) {
       tomorrowNameDayUsers.forEach(u => {
         const mention = '@' + u
-        const reminder = ':bell: Imorgon har du namnsdag! Du glömmer väl inte fika? :cake: ' +
-          'Det är ju alltid uppskattat bland kollegorna :yum:'
 
-        console.log(reminder)
-        slack.send({ text: reminder, channel: mention })
+        console.log(REMINDER_TEXT)
+        slack.send({ text: REMINDER_TEXT, channel: mention })
       })
     }
   })
 }
 
+function getNameDayForDate(date) {
+  const dateString = `${pad(date.getMonth() + 1)}-${pad(date.getDate())}`
+  return nameDays.find(day => day.date === dateString)
+}
+
+function listToEnumerationText(list) {
+  if (list.length === 1) return list[0].toString()
+
+  return `${list.slice(0, -1).join(', ')} och ${list[list.length - 1]}`
+}
