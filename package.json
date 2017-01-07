@@ -10,7 +10,7 @@
   "author": "Jimmy Stridh <jimmy@stridh.nu>",
   "license": "MIT",
   "dependencies": {
-    "dotenv": "^2.0.0",
+    "dotenv": "^3.0.0",
     "slack-webhook": "^1.0.0"
   }
 }
