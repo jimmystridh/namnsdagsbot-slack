@@ -1,2 +1,2 @@
-0 8 * * * root cd /app && /usr/local/bin/node /app/index.js >> /var/log/cron.log 2>&1
+0 8 * * * root /app/index.js >> /var/log/cron.log 2>&1
 
